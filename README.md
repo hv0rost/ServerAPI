@@ -8,14 +8,14 @@
 	}`
   
 ## - Maven connections in simple KMM project
-allprojects {
+`allprojects {
     repositories {
         ...
         maven(url = "https://jitpack.io/)
     }
-}
+}`
 
 ## - Then connect implementations
-dependencies {
+`dependencies {
 	        implementation 'com.github.hv0rost:TheCloudServerLibrary:Tag'
-	}
+	}`
