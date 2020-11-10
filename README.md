@@ -7,7 +7,7 @@ allprojects {
 		}
 	}
   
-## - maven connections in simple KMM project
+## - Maven connections in simple KMM project
 allprojects {
     repositories {
         ...
