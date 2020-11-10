@@ -1,11 +1,11 @@
 ## - Maven connections in simple Android project
 
-allprojects {
+`allprojects {
 		repositories {
 			...
 			maven { url 'https://jitpack.io' }
 		}
-	}
+	}`
   
 ## - Maven connections in simple KMM project
 allprojects {
