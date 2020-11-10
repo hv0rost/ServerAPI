@@ -7,7 +7,7 @@ allprojects {
         }
     }
 ```
-## Maven connections in simple KMM project
+## Maven connections in KMM project
 ```Kotlin
 allprojects {
     repositories {
