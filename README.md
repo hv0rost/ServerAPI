@@ -1,4 +1,5 @@
 ----maven connections in simple Android project----
+
 allprojects {
 		repositories {
 			...
