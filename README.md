@@ -1,4 +1,4 @@
-----maven connections in simple Android project----
+## - Maven connections in simple Android project
 
 allprojects {
 		repositories {
@@ -7,7 +7,7 @@ allprojects {
 		}
 	}
   
-----maven connections in simple KMM project----
+## - maven connections in simple KMM project
 allprojects {
     repositories {
         ...
@@ -15,8 +15,7 @@ allprojects {
     }
 }
 
-Then connect implementations
-
+## - Then connect implementations
 dependencies {
 	        implementation 'com.github.hv0rost:TheCloudServerLibrary:Tag'
 	}
