@@ -20,6 +20,6 @@ allprojects {
 ## Then connect implementations
 ```Kotlin
 dependencies {
-	        implementation 'com.github.hv0rost:TheCloudServerLibrary:Tag'
+	        implementation 'com.github.hv0rost:TheCloudServerLibrary:0.1.1'
 	}
 ```
