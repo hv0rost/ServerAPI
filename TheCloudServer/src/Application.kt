@@ -1,17 +1,17 @@
 package com.example
 
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.jackson.*
+import io.ktor.gson.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.jetbrains.exposed.sql.Database
 import java.io.PrintWriter
+import java.text.DateFormat
 import java.util.*
 
 
@@ -23,8 +23,9 @@ fun Application.module(testing: Boolean = false) {
     val theCloudController = TheCloudController()
     initDB("a1640Z89")
     install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
+        gson {
+            //setDateFormat(DateFormat.SHORT)
+            setPrettyPrinting()
         }
     }
 
