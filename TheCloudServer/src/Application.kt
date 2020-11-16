@@ -10,6 +10,8 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.PrintWriter
 import java.text.DateFormat
 import java.util.*
@@ -30,7 +32,6 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        get("/all") { call.respond(theCloudController.getAll()) }
         get("/queries/1") { call.respond(theCloudController.getAddressName()) }
         get("/queries/2") { call.respond(theCloudController.getPaymentCustomer()) }
         get("/queries/3") { call.respond(theCloudController.getTypeSign()) }
@@ -43,6 +44,19 @@ fun Application.module(testing: Boolean = false) {
         get("/queries/10") { call.respond(theCloudController.getDateSign()) }
         get("/queries/11") { call.respond(theCloudController.getExecEmail()) }
         get("/queries/12") { call.respond(theCloudController.getEmployersName()) }
+
+        install(Routing){
+            route("/all"){
+                get("/") { call.respond(theCloudController.getAll()) }
+                post("/") {
+                    val cities = call.receive<Cities>()
+                    //call.respond(theCloudController.getAll())
+                    theCloudController.cityInsert(cities)
+                    call.respond(cities)
+                }
+            }
+        }
+
     }
 }
 

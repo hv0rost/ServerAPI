@@ -16,8 +16,9 @@ object Address : Table() {
 }
 
 object City : Table() {
-    val idCity = integer("idCity")
+    val idCity = integer("idCity").autoIncrement()
     val name = varchar("name", 50)
+    override val primaryKey = PrimaryKey(idCity, name = "theCloud.City_pkey")
 }
 
 object Composition_Contract : Table() {

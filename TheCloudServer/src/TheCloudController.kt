@@ -1,5 +1,7 @@
 package com.example
 
+import io.ktor.application.*
+import io.ktor.request.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.jodatime.date
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -7,21 +9,19 @@ import org.joda.time.DateTime
 import kotlin.collections.ArrayList
 
 class TheCloudController {
-    fun getAll(): ArrayList<SignatureContracts> {
-        val signatureContract: ArrayList<SignatureContracts> = arrayListOf() // .toString("dd-MM-yyyy") для дат
+    fun getAll(): ArrayList<Cities> {
+        val city: ArrayList<Cities> = arrayListOf() // .toString("dd-MM-yyyy") для дат
         transaction {
-            Signature_Contract.selectAll().map {
-                signatureContract.add(
-                    SignatureContracts(
-                        idSign = it[Signature_Contract.idSign],
-                        typeSign = it[Signature_Contract.typeSign],
-                        dateSign = it[Signature_Contract.dateSign].toString("dd-MM-yyyy"),
-                        idContract = it[Signature_Contract.idContract]
+            City.selectAll().map {
+                city.add(
+                    Cities(
+                        idCity = it[City.idCity],
+                        name = it[City.name]
                     )
                 )
             }
         }
-        return signatureContract
+        return city
     }
 
     fun getAddressName(): Pair<ArrayList<Addresses>, ArrayList<Cities>> {
@@ -344,6 +344,14 @@ class TheCloudController {
                 }
         }
         return Pair(customer, employer)
+    }
+
+    fun cityInsert(city : Cities){
+        transaction{
+            City.insert {
+                it[name] = city.name.toString()
+            }
+        }
     }
 
 }

@@ -13,7 +13,7 @@ data class Addresses(
 
 data class Cities(
     val idCity: Int? = null,
-    val name: String? = null
+    var name: String? = null
 )
 
 data class CompositionContracts(
