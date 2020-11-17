@@ -26,7 +26,7 @@ fun Application.module(testing: Boolean = false) {
     initDB("a1640Z89")
     install(ContentNegotiation) {
         gson {
-            //setDateFormat(DateFormat.SHORT)
+            setDateFormat(DateFormat.SHORT)
             setPrettyPrinting()
         }
     }
@@ -45,18 +45,126 @@ fun Application.module(testing: Boolean = false) {
         get("/queries/11") { call.respond(theCloudController.getExecEmail()) }
         get("/queries/12") { call.respond(theCloudController.getEmployersName()) }
 
-        install(Routing){
-            route("/all"){
-                get("/") { call.respond(theCloudController.getAll()) }
-                post("/") {
-                    val cities = call.receive<Cities>()
-                    //call.respond(theCloudController.getAll())
-                    theCloudController.cityInsert(cities)
-                    call.respond(cities)
-                }
+        route("/insert/city"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val cities = call.receive<Cities>()
+                theCloudController.cityInsert(cities)
+                call.respond(cities)
             }
         }
-
+        route("/insert/address"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val address = call.receive<Addresses>()
+                theCloudController.addressInsert(address)
+                call.respond(address)
+            }
+        }
+        route("/insert/customer"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val customer = call.receive<Customers>()
+                theCloudController.customerInsert(customer)
+                call.respond(customer)
+            }
+        }
+        route("/insert/composContract"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val compositionContract = call.receive<CompositionContracts>()
+                theCloudController.compositionContractInsert(compositionContract)
+                call.respond(compositionContract)
+            }
+        }
+        route("/insert/contract"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val contract = call.receive<Contracts>()
+                theCloudController.contractInsert(contract)
+                call.respond(contract)
+            }
+        }
+        route("/insert/employer"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val employer = call.receive<Employers>()
+                theCloudController.employerInsert(employer)
+                call.respond(employer)
+            }
+        }
+        route("/insert/execution"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val execution = call.receive<Executions>()
+                theCloudController.executionInsert(execution)
+                call.respond(execution)
+            }
+        }
+        route("/insert/executionEmp"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val executionEmployer = call.receive<ExecutionEmployers>()
+                theCloudController.executionEmployerInsert(executionEmployer)
+                call.respond(executionEmployer)
+            }
+        }
+        route("/insert/optionPrice"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val optionPrice = call.receive<OptionPrices>()
+                theCloudController.optionPricesInsert(optionPrice)
+                call.respond(optionPrice)
+            }
+        }
+        route("/insert/participants"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val participants = call.receive<Participant>()
+                theCloudController.participantsInsert(participants)
+                call.respond(participants)
+            }
+        }
+        route("/insert/payment"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val payment = call.receive<Payments>()
+                theCloudController.paymentInsert(payment)
+                call.respond(payment)
+            }
+        }
+        route("/insert/position"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val position = call.receive<Positions>()
+                theCloudController.positionInsert(position)
+                call.respond(position)
+            }
+        }
+        route("/insert/request"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val request = call.receive<Requests>()
+                theCloudController.requestInsert(request)
+                call.respond(request)
+            }
+        }
+        route("/insert/signature"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val signature = call.receive<SignatureContracts>()
+                theCloudController.signatureContractInsert(signature)
+                call.respond(signature)
+            }
+        }
+        route("/insert/vs"){
+            get("/") { call.respond(theCloudController.getAll()) }
+            post("/") {
+                val virtServer = call.receive<VirtualServers>()
+                theCloudController.virtualServerInsert(virtServer)
+                call.respond(virtServer)
+            }
+        }
     }
 }
 

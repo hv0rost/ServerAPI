@@ -3,12 +3,14 @@ package com.example
 import io.ktor.application.*
 import io.ktor.request.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.jodatime.Date
 import org.jetbrains.exposed.sql.jodatime.date
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 import kotlin.collections.ArrayList
 
 class TheCloudController {
+    //Get Part
     fun getAll(): ArrayList<Cities> {
         val city: ArrayList<Cities> = arrayListOf() // .toString("dd-MM-yyyy") для дат
         transaction {
@@ -346,12 +348,145 @@ class TheCloudController {
         return Pair(customer, employer)
     }
 
+//Insert Part
     fun cityInsert(city : Cities){
         transaction{
             City.insert {
-                it[name] = city.name.toString()
+                it[name] = city.name!!
             }
         }
     }
 
+    fun virtualServerInsert(vs : VirtualServers){
+        transaction {
+            Virtual_Server.insert{
+                it[idRequest] = vs.idRequest!!
+            }
+        }
+    }
+
+    fun signatureContractInsert(signContr : SignatureContracts){
+        transaction {
+            Signature_Contract.insert {
+                it[typeSign] = signContr.typeSign!!
+                it[dateSign] = DateTime(signContr.dateSign!!)
+                it[idContract] = signContr.idContract!!
+            }
+        }
+    }
+
+    fun requestInsert(request: Requests){
+        transaction {
+            Request.insert {
+
+            }
+        }
+    }
+
+    fun positionInsert(positions: Positions){
+        transaction {
+            Position.insert {
+                it[post] = positions.post!!
+            }
+        }
+    }
+
+    fun paymentInsert(payments: Payments){
+        transaction {
+            Payment.insert {
+                it[size] = payments.size!!
+                it[payDate] = DateTime(payments.payDate!!)
+                it[idContract] = payments.idContract!!
+            }
+        }
+    }
+
+    fun participantsInsert(participant: Participant) {
+        transaction {
+            Participants.insert {
+                it[name] = participant.name!!
+                it[idCustomer] = participant.idCustomer!!
+                it[idContract] = participant.idContract!!
+            }
+        }
+    }
+
+    fun optionPricesInsert(optionPrice: OptionPrices){
+        transaction {
+            Option_Price.insert {
+                it[dateStart] = DateTime(optionPrice.dateStart!!)
+                it[dateEnd] = DateTime(optionPrice.dateEnd!!)
+                it[price] = optionPrice.price!!
+                it[idOption] = optionPrice.idOption!!
+            }
+        }
+    }
+
+    fun executionEmployerInsert(executionEmployer: ExecutionEmployers){
+        transaction {
+            Execution_Employer.insert {
+                it[idExecution] = executionEmployer.idExecution!!
+                it[idEmp] = executionEmployer.idEmp!!
+            }
+        }
+    }
+
+    fun executionInsert(execution: Executions){
+        transaction {
+            Execution.insert {
+                it[status] = execution.status!!
+                it[execDate] = DateTime(execution.execDate!!)
+                it[idComposition] = execution.idComposition!!
+            }
+        }
+    }
+
+    fun employerInsert(employer: Employers){
+        transaction {
+            Employer.insert {
+                it[name] = employer.name!!
+                it[idPosition] = employer.idPosition!!
+            }
+        }
+    }
+
+    fun customerInsert(customer: Customers){
+        transaction {
+            Customer.insert {
+                it[idCust] = customer.idCust!!
+                it[FIO] = customer.FIO!!
+                it[email] = customer.email!!
+                it[phone] = customer.phone!!
+                it[idCustomer] = customer.idCustomer!!
+                it[idRequest] = customer.idRequest!!
+            }
+        }
+    }
+
+    fun contractInsert(contract: Contracts){
+        transaction {
+            Contract.insert {
+                it[idContr] = contract.idContr!!
+            }
+        }
+    }
+
+    fun compositionContractInsert(compositionContract: CompositionContracts){
+        transaction {
+            Composition_Contract.insert {
+                it[idContract] = compositionContract.idContract!!
+                it[idRequest] = compositionContract.idRequest!!
+            }
+        }
+    }
+
+    fun addressInsert(address: Addresses){
+        transaction {
+            Address.insert {
+                it[name] = address.name!!
+                it[idCustomer] = address.idCustomer!!
+                it[idCity] = address.idCity!!
+            }
+        }
+    }
 }
