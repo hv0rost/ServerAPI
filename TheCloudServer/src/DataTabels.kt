@@ -29,10 +29,16 @@ data class Contracts(
 data class Customers(
     var idCust: Int? = null,
     var FIO: String? = null,
-    var email: String? = null,
-    var phone: String? = null,
     var idCustomer: Int? = null,
     var idRequest: Int? = null
+)
+
+data class Accounts(
+    var idAccount: Int? = null,
+    var login: String? = null,
+    var email: String? = null,
+    var password: String? = null,
+    var phone: String? = null
 )
 
 data class Employers(

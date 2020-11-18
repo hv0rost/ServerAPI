@@ -26,6 +26,24 @@ class TheCloudController {
         return city
     }
 
+    fun getAccount(): ArrayList<Accounts> {
+        val accounts: ArrayList<Accounts> = arrayListOf() // .toString("dd-MM-yyyy") для дат
+        transaction {
+            Account.selectAll().map {
+                accounts.add(
+                    Accounts(
+                        idAccount = it[Account.idAccount],
+                        login = it[Account.login],
+                        email = it[Account.email],
+                        password = it[Account.password],
+                        phone = it[Account.phone]
+                    )
+                )
+            }
+        }
+        return accounts
+    }
+
     fun getAddressName(): Pair<ArrayList<Addresses>, ArrayList<Cities>> {
         val address: ArrayList<Addresses> = arrayListOf()
         val city: ArrayList<Cities> = arrayListOf()
@@ -179,13 +197,11 @@ class TheCloudController {
         val execution: ArrayList<Executions> = arrayListOf()
         transaction {
             (Customer.leftJoin(Request).leftJoin(Composition_Contract).leftJoin(Execution)
-                    ).slice(Customer.FIO, Customer.phone, Execution.status)
+                    ).slice(Customer.FIO, Execution.status)
                 .select { Execution.status.eq(true) }.forEach() {
                     customer.add(
                         Customers(
                             FIO = it[Customer.FIO],
-                            phone = it[Customer.phone]
-
                         )
                     )
                     execution.add(
@@ -307,7 +323,6 @@ class TheCloudController {
                 .select { Execution.status.eq(true) }.forEach() {
                     customer.add(
                         Customers(
-                            email = it[Customer.email],
                             FIO = it[Customer.FIO]
                         )
                     )
@@ -455,10 +470,19 @@ class TheCloudController {
             Customer.insert {
                 it[idCust] = customer.idCust!!
                 it[FIO] = customer.FIO!!
-                it[email] = customer.email!!
-                it[phone] = customer.phone!!
                 it[idCustomer] = customer.idCustomer!!
                 it[idRequest] = customer.idRequest!!
+            }
+        }
+    }
+
+    fun accountInsert(customer: Accounts){
+        transaction {
+            Account.insert {
+                it[login] = customer.login!!
+                it[email] = customer.email!!
+                it[password] = customer.password!!
+                it[phone] = customer.phone!!
             }
         }
     }

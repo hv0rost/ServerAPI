@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.City.autoIncrement
+import com.example.Customer.references
 import io.ktor.http.*
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
@@ -47,6 +48,16 @@ object Customer : Table() {
     val idRequest = (integer("idRequest") references Request.idReq)
 
     override val primaryKey = PrimaryKey(idCust, name = "Customer_pkey")
+}
+
+object Account : Table() {
+    val idAccount = integer("idAccount").autoIncrement()
+    val login = varchar("login", 50)
+    val email = varchar("email", 50)
+    val password = varchar("password", 50)
+    val phone = varchar("phone", 20)
+
+    override val primaryKey = PrimaryKey(idAccount, name = "account_pkey")
 }
 
 object Employer : Table() {

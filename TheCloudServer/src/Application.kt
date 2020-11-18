@@ -53,6 +53,16 @@ fun Application.module(testing: Boolean = false) {
                 call.respond(cities)
             }
         }
+
+        route("/insert/account"){
+            get("/") { call.respond(theCloudController.getAccount()) }
+            post("/") {
+                val account = call.receive<Accounts>()
+                theCloudController.accountInsert(account)
+                call.respond(account)
+            }
+        }
+
         route("/insert/address"){
             get("/") { call.respond(theCloudController.getAll()) }
             post("/") {
