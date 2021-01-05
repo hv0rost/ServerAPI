@@ -4,36 +4,38 @@ import com.example.Address.primaryKey
 import org.joda.time.DateTime
 import java.util.*
 
-data class Addresses(
+data class GraphQLRequest(val query: String? = null)
+
+data class AddressData(
     val idAdr : Int? = null,
     var name : String? = null,
     var idCustomer : Int? = null,
     var idCity : Int? = null
 )
 
-data class Cities(
+data class CityData(
     val idCity: Int? = null,
     var name: String? = null
 )
 
-data class CompositionContracts(
+data class CompositionData(
     val idCompos: Int? = null,
     var idContract: Int? = null,
     var idRequest: Int? = null
 )
 
-data class Contracts(
+data class ContractData(
     val idContr: Int? = null
 )
 
-data class Customers(
+data class CustomerData(
     var idCust: Int? = null,
     var FIO: String? = null,
     var idCustomer: Int? = null,
     var idRequest: Int? = null
 )
 
-data class Accounts(
+data class AccountData(
     var idAccount: Int? = null,
     var login: String? = null,
     var email: String? = null,
@@ -41,26 +43,26 @@ data class Accounts(
     var phone: String? = null
 )
 
-data class Employers(
+data class EmployerData(
     val idEmp: Int? = null,
     var name: String? = null,
     var idPosition: Int? = null
 )
 
-data class Executions(
+data class ExecutionData(
     val idExec: Int? = null,
     var status: Boolean? = null,
     var execDate: String? = null,
     var idComposition: Int? = null
 )
 
-data class ExecutionEmployers(
+data class ExecutionEmployerData(
     val idExecEmp: Int? = null,
     var idExecution: Int? = null,
     var idEmp: Int? = null
 )
 
-data class OptionPrices(
+data class PriceData(
     val idPrice: Int? = null,
     var dateStart: String? = null,
     var dateEnd: String? = null,
@@ -68,37 +70,37 @@ data class OptionPrices(
     var idOption: Int? = null
 )
 
-data class Participant(
+data class ParticipantData(
     val idPart: Int? = null,
     var name: String? = null,
     var idCustomer: Int? = null,
     var idContract: Int? = null
 )
 
-data class Payments(
+data class PaymentData(
     val idPay: Int? = null,
     var size: Float? = null,
     var payDate: String? = null,
     var idContract: Int? = null
 )
 
-data class Positions(
+data class PositionData(
     val idPos: Int? = null,
     var post: String? = null
 )
 
-data class Requests(
+data class RequestData(
     val idReq: Int? = null
 )
 
-data class SignatureContracts(
+data class SignatureContractData(
     val idSign: Int? = null,
     var typeSign: String? = null,
     var dateSign : String? = null,
     var idContract: Int? = null
 )
 
-data class VirtualServers(
+data class VirtualServerData(
     var idVS: Int? = null,
     var idRequest: Int? = null
 )

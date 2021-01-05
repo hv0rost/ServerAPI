@@ -3,8 +3,10 @@ package com.example
 import com.example.City.autoIncrement
 import com.example.Customer.references
 import io.ktor.http.*
+import io.netty.resolver.AddressResolver
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.jodatime.datetime
 import org.jetbrains.exposed.sql.Table
 import java.util.*
@@ -17,6 +19,15 @@ object Address : Table() {
     val idCity = (integer("idCity") references City.idCity)
 
     override val primaryKey = PrimaryKey(idAdr, name ="Address_pkey")
+
+    fun addressToMap(row: ResultRow): AddressData =
+        AddressData(
+            idAdr = row[idAdr],
+            name = row[name],
+            idCustomer = row[idCustomer],
+            idCity = row[idCity],
+
+        )
 }
 
 object City : Table() {
@@ -58,6 +69,15 @@ object Account : Table() {
     val phone = varchar("phone", 20)
 
     override val primaryKey = PrimaryKey(idAccount, name = "account_pkey")
+
+    fun accountToMap(row: ResultRow): AccountData =
+        AccountData(
+            idAccount = row[idAccount],
+            login = row[login],
+            email = row[email],
+            password = row[password],
+            phone = row[phone]
+            )
 }
 
 object Employer : Table() {
