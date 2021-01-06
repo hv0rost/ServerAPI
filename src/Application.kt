@@ -3,6 +3,8 @@ package com.example
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.gson.*
@@ -20,7 +22,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val controller = TransactionController()
+    val query = TransactionController()
     dbInnit("2254")
     install(ContentNegotiation) {
         gson {
@@ -28,11 +30,35 @@ fun Application.module(testing: Boolean = false) {
             setPrettyPrinting()
         }
     }
+    install(Authentication) {
+        jwt {
+            verifier(JwtConfig.verifier)
+            realm = "TheCloud"
+            validate {
+                TokenKey(it.payload.getClaim("email").asString())
+            }
+        }
+    }
 
    routing {
-       post("/account"){
-           val graphQLRequest = call.receive<GraphQLRequest>()
-           call.respond(controller.accountController.execute(graphQLRequest.query!!))
+       post("/registration") {
+           val accountData = call.receive<GraphQLRequest>()
+           val emailKey = TokenKey(
+               (query.tokenController.execute(accountData.query!!)
+                   .substringAfterLast(':').substring(1)).substringBefore('"')
+           )
+           val token = JwtConfig.generateToken(emailKey.email)
+           call.respond(
+               query.tokenController.execute(
+                   "mutation{postToken(token : \"$token\", email :\"${emailKey.email}\") }"
+               )
+           )
+       }
+       authenticate {
+           post("/account"){
+               val graphQLRequest = call.receive<GraphQLRequest>()
+               call.respond(query.accountController.execute(graphQLRequest.query!!))
+           }
        }
    }
 }

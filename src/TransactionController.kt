@@ -8,11 +8,12 @@ class TransactionController {
 
     private val transaction = InsertController()
 
-    val accountController = KGraphQL.schema {
-        query("getAccount") {
-            resolver {  ->
+    val tokenController = KGraphQL.schema {
+        query("getToken") {
+            resolver { email: String ->
                 transaction {
-                    Account.selectAll().map { Account.accountToMap(it) }
+                    Account.slice(Account.email).select { Account.email eq email  }
+                        .map { Account.getAuth(it) }
                 }
             }
         }
@@ -22,18 +23,33 @@ class TransactionController {
                 transaction.insertAccount(login, email, password, phone)
             }
         }
-        mutation("deleteAccount"){
-            resolver{ idAccount : Int ->
+        mutation("postToken"){
+            resolver { token : String , email : String  ->
+                transaction.addToken(token, email)
+            }
+        }
+    }
+
+    val accountController = KGraphQL.schema {
+        query("getAccount") {
+            resolver {token: String  ->
                 transaction {
-                    Account.deleteWhere { Account.idAccount eq idAccount }
+                    Account.select{Account.token eq token}.map { Account.accountToMap(it) }
+                }
+            }
+        }
+        mutation("deleteAccount"){
+            resolver{ token: String ->
+                transaction {
+                    Account.deleteWhere { Account.token eq token }
                 }
             }
         }
         mutation("updateAccount") {
-            resolver { idAccount : Int, login: String, email: String,
+            resolver { token : String, login: String, email: String,
                        password: String, phone: String ->
                 transaction {
-                    Account.update({ Account.idAccount eq idAccount }) {
+                    Account.update({ Account.token eq token }) {
                         it[Account.login] = login
                         it[Account.email] = email
                         it[Account.password] = password

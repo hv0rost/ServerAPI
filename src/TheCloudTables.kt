@@ -11,6 +11,32 @@ import org.jetbrains.exposed.sql.jodatime.datetime
 import org.jetbrains.exposed.sql.Table
 import java.util.*
 
+object Account : Table() {
+    val idAccount = integer("idAccount").autoIncrement()
+    val login = varchar("login", 50)
+    val email = varchar("email", 50)
+    val password = varchar("password", 50)
+    val phone = varchar("phone", 20)
+
+    val token = varchar("token", 300)
+
+    override val primaryKey = PrimaryKey(idAccount, name = "account_pkey")
+
+    fun accountToMap(row: ResultRow): AccountData =
+        AccountData(
+            idAccount = row[idAccount],
+            login = row[login],
+            email = row[email],
+            password = row[password],
+            phone = row[phone],
+            token = row[token]
+        )
+    fun getAuth(row: ResultRow): AccountData =
+        AccountData(
+            email = row[email],
+            password = row[password]
+        )
+}
 
 object Address : Table() {
     val idAdr = integer("idAdr").autoIncrement()
@@ -59,25 +85,6 @@ object Customer : Table() {
     val idRequest = (integer("idRequest") references Request.idReq)
 
     override val primaryKey = PrimaryKey(idCust, name = "Customer_pkey")
-}
-
-object Account : Table() {
-    val idAccount = integer("idAccount").autoIncrement()
-    val login = varchar("login", 50)
-    val email = varchar("email", 50)
-    val password = varchar("password", 50)
-    val phone = varchar("phone", 20)
-
-    override val primaryKey = PrimaryKey(idAccount, name = "account_pkey")
-
-    fun accountToMap(row: ResultRow): AccountData =
-        AccountData(
-            idAccount = row[idAccount],
-            login = row[login],
-            email = row[email],
-            password = row[password],
-            phone = row[phone]
-            )
 }
 
 object Employer : Table() {

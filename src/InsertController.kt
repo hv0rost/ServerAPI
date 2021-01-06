@@ -2,10 +2,11 @@ package com.example
 
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class InsertController {
     fun insertAccount(login: String, email: String,
-                      password: String, phone: String): Int {
+                      password: String, phone: String): String {
         transaction {
             Account.insert {
                 it[Account.login] = login
@@ -14,6 +15,15 @@ class InsertController {
                 it[Account.phone] = phone
             }
         }
-        return 200
+        return email
+    }
+
+    fun addToken(token : String, email : String) : String {
+        transaction {
+            Account.update({ Account.email eq email }) {
+                it[Account.token] = token
+            }
+        }
+        return token
     }
 }

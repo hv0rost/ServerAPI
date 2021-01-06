@@ -6,6 +6,15 @@ import java.util.*
 
 data class GraphQLRequest(val query: String? = null)
 
+data class AccountData(
+    var idAccount: Int? = null,
+    var login: String? = null,
+    var email: String? = null,
+    var password: String? = null,
+    var phone: String? = null,
+    var token: String? = null
+)
+
 data class AddressData(
     val idAdr : Int? = null,
     var name : String? = null,
@@ -33,14 +42,6 @@ data class CustomerData(
     var FIO: String? = null,
     var idCustomer: Int? = null,
     var idRequest: Int? = null
-)
-
-data class AccountData(
-    var idAccount: Int? = null,
-    var login: String? = null,
-    var email: String? = null,
-    var password: String? = null,
-    var phone: String? = null
 )
 
 data class EmployerData(
