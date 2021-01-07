@@ -60,4 +60,41 @@ class TransactionController {
         }
     }
 
+    val сustomerController = KGraphQL.schema {
+        query("getCustomer") {
+            resolver {token: String  ->
+                transaction {
+                    Account.select{Account.token eq token}.map { Account.accountToMap(it) }
+                }
+            }
+        }
+        mutation("postCustomer") {
+            resolver { login: String, email: String,
+                       password: String, phone: String ->
+                transaction.insertAccount(login, email, password, phone)
+            }
+        }
+        mutation("deleteCustomer"){
+            resolver{ token: String ->
+                transaction {
+                    Account.deleteWhere { Account.token eq token }
+                }
+            }
+        }
+        mutation("updateCustomer") {
+            resolver { token : String, login: String, email: String,
+                       password: String, phone: String ->
+                transaction {
+                    Account.update({ Account.token eq token }) {
+                        it[Account.login] = login
+                        it[Account.email] = email
+                        it[Account.password] = password
+                        it[Account.phone] = phone
+                    }
+                }
+            }
+        }
+    }
+
+
 }

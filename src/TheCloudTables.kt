@@ -1,15 +1,10 @@
 package com.example
 
-import com.example.City.autoIncrement
-import com.example.Customer.references
-import io.ktor.http.*
-import io.netty.resolver.AddressResolver
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.jodatime.datetime
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+
 
 object Account : Table() {
     val idAccount = integer("idAccount").autoIncrement()
@@ -31,10 +26,10 @@ object Account : Table() {
             phone = row[phone],
             token = row[token]
         )
+
     fun getAuth(row: ResultRow): AccountData =
         AccountData(
-            email = row[email],
-            password = row[password]
+            email = row[email]
         )
 }
 
@@ -61,6 +56,12 @@ object City : Table() {
     val name = varchar("name", 50)
 
     override val primaryKey = PrimaryKey(idCity, name = "City_pkey")
+
+    fun cityToMap(row: ResultRow): CityData =
+        CityData(
+            idCity = row[idCity],
+            name = row[name]
+        )
 }
 
 object Composition_Contract : Table() {
@@ -69,22 +70,40 @@ object Composition_Contract : Table() {
     val idRequest = (integer("idRequest") references Request.idReq)
 
     override val primaryKey = PrimaryKey(idCompos, name = "CompositionContract_pkey")
+
+    fun  composContractToMap(row: ResultRow) : CompositionData =
+        CompositionData(
+            idCompos = row[idCompos],
+            idContract = row[idContract],
+            idRequest = row[idRequest]
+        )
 }
 
 object Contract : Table() {
     val idContr = integer("idContr")/*.autoIncrement()*/
     override val primaryKey = PrimaryKey(idContr, name = "Contract_pkey")
+
+    fun  contractToMap(row: ResultRow) : ContractData =
+        ContractData(
+            idContr = row[idContr]
+        )
 }
 
 object Customer : Table() {
     val idCust = integer("idCust")/*.autoIncrement()*/
     val FIO = varchar("fio", 60)
-    val email = varchar("email", 60)
-    val phone = varchar("phone", 15)
     val idCustomer = (integer("idCustomer") references idCust)
     val idRequest = (integer("idRequest") references Request.idReq)
 
     override val primaryKey = PrimaryKey(idCust, name = "Customer_pkey")
+
+    fun  customerToMap(row: ResultRow) : CustomerData =
+        CustomerData(
+            idCust = row[idCust],
+            FIO = row[FIO],
+            idCustomer = row[idCustomer],
+            idRequest = row[idRequest]
+        )
 }
 
 object Employer : Table() {
@@ -93,6 +112,13 @@ object Employer : Table() {
     val idPosition = (integer("idPosition") references Position.idPos)
 
     override val primaryKey = PrimaryKey(idEmp, name = "Employer_pkey")
+
+    fun  employerToMap(row: ResultRow) : EmployerData =
+        EmployerData(
+            idEmp = row[idEmp],
+            name = row[name],
+            idPosition = row[idPosition]
+        )
 }
 
 object Execution : Table() {
@@ -102,6 +128,14 @@ object Execution : Table() {
     val idComposition = (integer("idComposition") references Composition_Contract.idCompos)
 
     override val primaryKey = PrimaryKey(idExec, name = "Execution_pkey")
+
+    fun  executionToMap(row: ResultRow) : ExecutionData =
+        ExecutionData(
+            idExec = row[idExec],
+            status = row[status],
+            execDate = row[execDate].toString("dd-MM-yyyy"),
+            idComposition = row[idComposition]
+        )
 }
 
 object Execution_Employer : Table() {
@@ -110,6 +144,13 @@ object Execution_Employer : Table() {
     val idExecution = (integer("idExecution") references Execution.idExec)
 
     override val primaryKey = PrimaryKey(idExecEmp, name = "ExecutionEmployer_pkey")
+
+    fun  execEmployerToMap(row: ResultRow) : ExecEmployerData =
+        ExecEmployerData(
+            idExecEmp = row[idExecEmp],
+            idEmp = row[idEmp],
+            idExecution = row[idExecution]
+        )
 }
 
 object Option_Price : Table() {
@@ -120,6 +161,15 @@ object Option_Price : Table() {
     val idOption = integer("idOption")
 
     override val primaryKey = PrimaryKey(idPrice, name = "OptionPrice_pkey")
+
+    fun  priceToMap(row: ResultRow) : PriceData =
+        PriceData(
+            idPrice = row[idPrice],
+            price = row[price],
+            dateStart = row[dateStart].toString("dd-MM-yyyy"),
+            dateEnd = row[dateEnd].toString("dd-MM-yyyy"),
+            idOption = row[idOption]
+        )
 }
 
 object Participants : Table() {
@@ -129,6 +179,14 @@ object Participants : Table() {
     val idCustomer = (integer("idCustomer") references Customer.idCust)
 
     override val primaryKey = PrimaryKey(idPart, name = "Participants_pkey")
+
+    fun participantsToMap(row: ResultRow) : ParticipantData =
+        ParticipantData(
+            idPart = row[idPart],
+            name = row[name],
+            idContract = row[idContract],
+            idCustomer = row[idCustomer]
+        )
 }
 
 object Payment : IntIdTable() {
@@ -139,6 +197,13 @@ object Payment : IntIdTable() {
 
     override val primaryKey = PrimaryKey(idPay, name = "Payment_pkey")
 
+    fun paymentToMap(row: ResultRow) : PaymentData =
+        PaymentData(
+            idPay = row[idPay],
+            size = row[size],
+            payDate = row[payDate].toString("dd-MM-yyyy"),
+            idContract = row[idContract]
+        )
 }
 
 object Position : Table() {
@@ -147,11 +212,21 @@ object Position : Table() {
 
     override val primaryKey = PrimaryKey(idPos, name = "Position_pkey")
 
+    fun positionToMap(row: ResultRow) : PositionData =
+        PositionData(
+            idPos = row[idPos],
+            post = row[post]
+        )
 }
 
 object Request : Table() {
     val idReq = integer("idReq").autoIncrement()
     override val primaryKey = PrimaryKey(idReq, name = "Request_pkey")
+
+    fun requestToMap(row: ResultRow) : RequestData =
+        RequestData(
+            idReq = row[idReq]
+        )
 }
 
 object Signature_Contract : Table() {
@@ -162,13 +237,28 @@ object Signature_Contract : Table() {
     val idEmployer = (integer("idEmployer") references Employer.idEmp)
 
     override val primaryKey = PrimaryKey(idSign, name = "SignatureContract_pkey")
+
+    fun signContractToMap(row: ResultRow) : SignContractData =
+        SignContractData(
+            idSign = row[idSign],
+            typeSign = row[typeSign],
+            dateSign = row[dateSign].toString("dd-MM-yyyy"),
+            idContract = row[idContract],
+            idEmployer = row[idEmployer]
+        )
 }
 
 object Virtual_Server : Table() {
-    val idVS = integer("idVS").autoIncrement()
+    val idVs = integer("idVS").autoIncrement()
     val idRequest = (integer("idRequest") references Request.idReq)
 
-    override val primaryKey = PrimaryKey(idVS, name = "VirtualServer_pkey")
+    override val primaryKey = PrimaryKey(idVs, name = "VirtualServer_pkey")
+
+    fun virtServerToMap(row: ResultRow) : VirtServerData =
+        VirtServerData(
+            idVs = row[idVs],
+            idRequest = row[idRequest]
+        )
 }
 
 

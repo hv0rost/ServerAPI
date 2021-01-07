@@ -57,7 +57,7 @@ data class ExecutionData(
     var idComposition: Int? = null
 )
 
-data class ExecutionEmployerData(
+data class ExecEmployerData(
     val idExecEmp: Int? = null,
     var idExecution: Int? = null,
     var idEmp: Int? = null
@@ -94,15 +94,16 @@ data class RequestData(
     val idReq: Int? = null
 )
 
-data class SignatureContractData(
+data class SignContractData(
     val idSign: Int? = null,
     var typeSign: String? = null,
     var dateSign : String? = null,
-    var idContract: Int? = null
+    var idContract: Int? = null,
+    var idEmployer: Int? = null
 )
 
-data class VirtualServerData(
-    var idVS: Int? = null,
+data class VirtServerData(
+    var idVs: Int? = null,
     var idRequest: Int? = null
 )
 
