@@ -6,7 +6,6 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
-import io.ktor.http.*
 import io.ktor.gson.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -33,7 +32,7 @@ fun Application.module(testing: Boolean = false) {
     install(Authentication) {
         jwt {
             verifier(JwtConfig.verifier)
-            realm = "TheCloud"
+            realm = "TheCloudQuotaServer"
             validate {
                 TokenKey(it.payload.getClaim("email").asString())
             }
