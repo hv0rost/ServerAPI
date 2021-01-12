@@ -17,7 +17,7 @@ class TransactionController {
                 }
             }
         }
-        mutation("postAccount") {
+        mutation("registration") {
             resolver { login: String, email: String,
                        password: String, phone: String ->
                 transaction.insertAccount(login, email, password, phone)
@@ -29,12 +29,20 @@ class TransactionController {
             }
         }
     }
-
     val accountController = KGraphQL.schema {
         query("getAccount") {
             resolver {token: String  ->
                 transaction {
                     Account.select{Account.token eq token}.map { Account.accountToMap(it) }
+                }
+            }
+        }
+        query("login") {
+            resolver {login: String, email: String, password: String  ->
+                transaction {
+                    Account.select{((Account.email eq email) and (Account.password eq password)) or
+                            ((Account.login eq login) and (Account.password eq password))}
+                        .map { Account.accountToMap(it) }
                 }
             }
         }
