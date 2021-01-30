@@ -58,7 +58,7 @@ fun Application.module(testing: Boolean = false) {
        }
        post("/login"){
            val graphQLRequest = call.receive<GraphQLRequest>()
-           call.respond(query.accountController.execute(graphQLRequest.query!!))
+           call.respond(query.loginController.execute(graphQLRequest.query!!))
        }
        authenticate {
            post("/account"){

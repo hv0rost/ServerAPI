@@ -30,20 +30,23 @@ class TransactionController {
             }
         }
     }
-    val accountController = KGraphQL.schema {
-        query("getAccount") {
-            resolver {token: String  ->
-                transaction {
-                    Account.select{Account.token eq token}.map { Account.accountToMap(it) }
-                }
-            }
-        }
-        query("login") {
+    val loginController = KGraphQL.schema {
+        query("getLogin") {
             resolver {login: String, email: String, password: String  ->
                 transaction {
                     Account.select{((Account.email eq email) and (Account.password eq password)) or
                             ((Account.login eq login) and (Account.password eq password))}
                         .map { Account.accountToMap(it) }
+                }
+            }
+        }
+    }
+
+    val accountController = KGraphQL.schema {
+        query("getAccount") {
+            resolver {token: String  ->
+                transaction {
+                    Account.select{Account.token eq token}.map { Account.accountToMap(it) }
                 }
             }
         }
