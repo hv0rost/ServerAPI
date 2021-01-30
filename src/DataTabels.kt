@@ -1,9 +1,5 @@
 package com.example
 
-import com.example.Address.primaryKey
-import org.joda.time.DateTime
-import java.util.*
-
 data class GraphQLRequest(val query: String? = null)
 
 data class AccountData(
@@ -12,7 +8,8 @@ data class AccountData(
     var email: String? = null,
     var password: String? = null,
     var phone: String? = null,
-    var token: String? = null
+    var token: String? = null,
+    var info: String? = null
 )
 
 data class AddressData(

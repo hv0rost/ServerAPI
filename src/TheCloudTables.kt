@@ -1,5 +1,7 @@
 package com.example
-
+import com.google.gson.Gson
+import jsonb
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.jodatime.datetime
@@ -12,6 +14,7 @@ object Account : Table() {
     val email = varchar("email", 50)
     val password = varchar("password", 50)
     val phone = varchar("phone", 20)
+    val info = jsonb("info", Map::class.java, Gson(), true)
 
     val token = varchar("token", 300)
 
@@ -24,7 +27,8 @@ object Account : Table() {
             email = row[email],
             password = row[password],
             phone = row[phone],
-            token = row[token]
+            token = row[token],
+            info = row[info].toString()
         )
 
     fun getAuth(row: ResultRow): AccountData =

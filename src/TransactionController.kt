@@ -3,6 +3,7 @@ package com.example
 import com.apurebase.kgraphql.KGraphQL
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import stringToJson
 
 class TransactionController {
 
@@ -19,8 +20,8 @@ class TransactionController {
         }
         mutation("registration") {
             resolver { login: String, email: String,
-                       password: String, phone: String ->
-                transaction.insertAccount(login, email, password, phone)
+                       password: String, phone: String, info: String ->
+                transaction.insertAccount(login, email, password, phone, stringToJson(info) )
             }
         }
         mutation("postToken"){
@@ -76,12 +77,12 @@ class TransactionController {
                 }
             }
         }
-        mutation("postCustomer") {
+        /*mutation("postCustomer") {
             resolver { login: String, email: String,
                        password: String, phone: String ->
                 transaction.insertAccount(login, email, password, phone)
             }
-        }
+        }*/
         mutation("deleteCustomer"){
             resolver{ token: String ->
                 transaction {
